@@ -24,12 +24,16 @@ public class SectionPageAdapter extends FragmentPagerAdapter {
     }
 
     @Override
+    public CharSequence getPageTitle(int position){
+        return mFragmentTitleList.get(position);
+    }
+    @Override
     public Fragment getItem(int i) {
-        return null;
+        return mFragmentList.get(i);
     }
 
     @Override
     public int getCount() {
-        return 0;
+        return mFragmentList.size();
     }
 }

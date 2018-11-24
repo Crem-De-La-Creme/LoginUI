@@ -30,27 +30,11 @@
         <android.support.design.widget.TabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"/>
 
-            <android.support.design.widget.TabItem
-                android:id="@+id/tabAccount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/account" />
 
-            <android.support.design.widget.TabItem
-                android:id="@+id/tabTickets"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tickets" />
 
-            <android.support.design.widget.TabItem
-                android:id="@+id/tabContacts"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/contacts" />
 
-        </android.support.design.widget.TabLayout>
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.view.ViewPager
