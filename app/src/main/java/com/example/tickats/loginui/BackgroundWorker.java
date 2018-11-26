@@ -134,15 +134,6 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
                 tab1.hrs=HoursWorked;
 
 
-
-
-
-
-
-
-
-
-
                 bufferedReader.close();
                 inputStream.close();
                 urlConnection.disconnect();
