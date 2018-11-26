@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -17,6 +18,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
@@ -72,6 +74,7 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
     protected String doInBackground(String... params) {
         String type = params[0];
         String login_url = "https://www.tickats.live/login.php";
+        String TicketStart_URL = "https://tickats.live/DisplayDataTickets.php";
 
 
 
@@ -134,15 +137,6 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
                 tab1.hrs=HoursWorked;
 
 
-
-
-
-
-
-
-
-
-
                 bufferedReader.close();
                 inputStream.close();
                 urlConnection.disconnect();
@@ -157,6 +151,59 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
             } catch (KeyManagementException e) {
                 e.printStackTrace();
             } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        else if (type.equals("TicketStart")){
+            try{
+                String FWid = params[1];
+                URL url = new URL(TicketStart_URL);
+                URLConnection conn = url.openConnection();
+                conn.setDoOutput(true);
+                conn.setDoInput(true);
+                OutputStream outputStream = conn.getOutputStream();
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream,"UTF-8" ));
+                String post_data = URLEncoder.encode("FWid", "UTF-8") + "=" + URLEncoder.encode(FWid, "UTF-8");
+                bufferedWriter.write(post_data);
+                bufferedWriter.flush();
+                bufferedWriter.close();
+                InputStream inputStream = conn.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
+                String result = "";
+                String line = "";
+                while ((line = bufferedReader.readLine()) !=null ){
+                    result += line;
+
+                }
+
+                JSONObject JO = new JSONObject(result);
+                JSONArray jTickets = JO.getJSONArray("Tickets");// Array name from php file
+
+                for(int i =0; i<jTickets.length(); i++){
+                    JSONObject t = jTickets.getJSONObject(i);
+                    // Pulls data from the URL and puts it into a string for later insertion
+                    String Tid  = t.getString("TicketID");
+                    String wName  = t.getString("WorksiteName");
+                    String Prior  = t.getString("Priority");
+                    // Adds values from the JSON array into the relative layout
+                    tab2.mTicketID.add(Tid);
+                    tab2.mWorksite.add(wName);
+                    tab2.mPriority.add(Prior);
+                }
+
+                bufferedReader.close();
+                inputStream.close();
+                outputStream.close();
+                return result;
+
+            }
+            catch(MalformedURLException e){
+                e.printStackTrace();
+            }
+            catch (IOException e){
+                e.printStackTrace();
+            }
+            catch (JSONException e) {
                 e.printStackTrace();
             }
         }

@@ -19,10 +19,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="textview">TextView</string>
     <string name="employee_id">Employee ID</string>
-    <string name="employee_id">Employee ID</string>
     <string name="surname">Surname</string>
-    <string name="surname">Surname</string>
-    <string name="firstname">firstname</string>
     <string name="firstname">firstname</string>
     <string name="lastname">lastname</string>
     <string name="last_name">Last Name</string>
@@ -32,5 +29,6 @@
     <string name="hours_worked">Hours Worked:</string>
     <string name="hours">Hours</string>
     <string name="clock_in_out">Clock In/Out</string>
+    <string name="log_out">Log Out</string>
 
 </resources>

@@ -43,6 +43,8 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 validate(view);
+                Username.getText().clear();
+                Password.getText().clear();
 
 
             }
