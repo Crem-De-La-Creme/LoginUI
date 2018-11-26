@@ -75,6 +75,10 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
         String type = params[0];
         String login_url = "https://www.tickats.live/login.php";
         String TicketStart_URL = "https://tickats.live/DisplayDataTickets.php";
+        String HeavyEquipment_URL = "https://tickats.live/DisplayHeavyEquipment.php";
+        String LightEquipment_URL = "https://tickats.live/DisplayLightEquipment.php";
+        String WorkerInfo_URL = "https://tickats.live/DisplayWorkerInfo.php";
+        String HeaderInfo_URL = "https://tickats.live/DisplayDataWorksiteLocation.php";
 
 
 
@@ -154,15 +158,15 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
                 e.printStackTrace();
             }
         }
-        else if (type.equals("TicketStart")){
-            try{
+        else if (type.equals("TicketStart")) {
+            try {
                 String FWid = params[1];
                 URL url = new URL(TicketStart_URL);
                 URLConnection conn = url.openConnection();
                 conn.setDoOutput(true);
                 conn.setDoInput(true);
                 OutputStream outputStream = conn.getOutputStream();
-                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream,"UTF-8" ));
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
                 String post_data = URLEncoder.encode("FWid", "UTF-8") + "=" + URLEncoder.encode(FWid, "UTF-8");
                 bufferedWriter.write(post_data);
                 bufferedWriter.flush();
@@ -171,7 +175,7 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
                 String result = "";
                 String line = "";
-                while ((line = bufferedReader.readLine()) !=null ){
+                while ((line = bufferedReader.readLine()) != null) {
                     result += line;
 
                 }
@@ -179,12 +183,12 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
                 JSONObject JO = new JSONObject(result);
                 JSONArray jTickets = JO.getJSONArray("Tickets");// Array name from php file
 
-                for(int i =0; i<jTickets.length(); i++){
+                for (int i = 0; i < jTickets.length(); i++) {
                     JSONObject t = jTickets.getJSONObject(i);
                     // Pulls data from the URL and puts it into a string for later insertion
-                    String Tid  = t.getString("TicketID");
-                    String wName  = t.getString("WorksiteName");
-                    String Prior  = t.getString("Priority");
+                    String Tid = t.getString("TicketID");
+                    String wName = t.getString("WorksiteName");
+                    String Prior = t.getString("Priority");
                     // Adds values from the JSON array into the relative layout
                     tab2.mTicketID.add(Tid);
                     tab2.mWorksite.add(wName);
@@ -196,17 +200,194 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
                 outputStream.close();
                 return result;
 
-            }
-            catch(MalformedURLException e){
+            } catch (MalformedURLException e) {
                 e.printStackTrace();
-            }
-            catch (IOException e){
+            } catch (IOException e) {
                 e.printStackTrace();
-            }
-            catch (JSONException e) {
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
+            else if(type.equals("HeavyEquip")){
+                try{
+                    String TID = params[1];
+                    //String TID = params[2];
+                    URL url = new URL(HeavyEquipment_URL);
+                    URLConnection conn = url.openConnection();
+                    conn.setDoOutput(true);
+                    conn.setDoInput(true);
+                    OutputStream outputStream = conn.getOutputStream();
+                    BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                    String post_data = URLEncoder.encode("TID", "UTF-8") + "=" + URLEncoder.encode(TID, "UTF-8");
+                    bufferedWriter.write(post_data);
+                    bufferedWriter.flush();
+                    bufferedWriter.close();
+                    InputStream inputStream = conn.getInputStream();
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
+                    String result = "";
+                    String line = "";
+                    while ((line = bufferedReader.readLine()) != null) {
+                        result += line;
+                    }
+
+                    JSONObject Job = new JSONObject(result);
+                    JSONArray HEdata = Job.getJSONArray("Heavy Equipment");
+                    for(int i =0; i<HEdata.length(); i++) {
+                        JSONObject HE = HEdata.getJSONObject(i);
+                        String HEid = HE.getString("Heavy Equipment ID");
+                        String Model = HE.getString("Equipment Description");
+                        String status = HE.getString("Equipment Status");
+                        TicketDetails.mArr1.add(HEid);
+                        TicketDetails.mArr2.add(Model);
+                        TicketDetails.mArr3.add(status);
+                    }
+                    bufferedReader.close();
+                    inputStream.close();
+                    outputStream.close();
+
+                    return result;
+                }
+                catch (MalformedURLException e) {
+                    e.printStackTrace(); }
+                catch (IOException e) {
+                    e.printStackTrace(); }
+                catch (JSONException e) {
+                    e.printStackTrace(); }
+            }
+
+            else if (type.equals("LightEquip")){
+                try{
+                    String TID = params[1];
+                    URL url = new URL(LightEquipment_URL);
+                    URLConnection conn = url.openConnection();
+                    conn.setDoOutput(true);
+                    conn.setDoInput(true);
+                    OutputStream outputStream = conn.getOutputStream();
+                    BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                    String post_data = URLEncoder.encode("TID", "UTF-8") + "=" + URLEncoder.encode(TID, "UTF-8");
+                    bufferedWriter.write(post_data);
+                    bufferedWriter.flush();
+                    bufferedWriter.close();
+                    InputStream inputStream = conn.getInputStream();
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
+                    String result = "";
+                    String line = "";
+                    while ((line = bufferedReader.readLine()) != null) {
+                        result += line;
+                    }
+
+                    JSONObject Job = new JSONObject(result);
+                    JSONArray LEdata = Job.getJSONArray("Light Equipment");
+                    for(int i =0; i<LEdata.length(); i++) {
+                        JSONObject LE = LEdata.getJSONObject(i);
+                        String LEid = LE.getString("Light Equipment ID");
+                        String Model = LE.getString("Equipment Description");
+                        String status = LE.getString("Equipment Status");
+                        TicketDetails.mArr4.add(LEid);
+                        TicketDetails.mArr5.add(Model);
+                        TicketDetails.mArr6.add(status);
+                    }
+                    bufferedReader.close();
+                    inputStream.close();
+                    outputStream.close();
+
+                    return result;
+                }
+                catch (MalformedURLException e) {
+                    e.printStackTrace(); }
+                catch (IOException e) {
+                    e.printStackTrace(); }
+                catch (JSONException e) {
+                    e.printStackTrace(); }
+            }
+
+
+            else if (type.equals("Workers")){
+                try{
+                    String TID = params[1];
+                    URL url = new URL(WorkerInfo_URL);
+                    URLConnection conn = url.openConnection();
+                    conn.setDoOutput(true);
+                    conn.setDoInput(true);
+                    OutputStream outputStream = conn.getOutputStream();
+                    BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                    String post_data = URLEncoder.encode("TID", "UTF-8") + "=" + URLEncoder.encode(TID, "UTF-8");
+                    bufferedWriter.write(post_data);
+                    bufferedWriter.flush();
+                    bufferedWriter.close();
+                    InputStream inputStream = conn.getInputStream();
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
+                    String result = "";
+                    String line = "";
+                    while ((line = bufferedReader.readLine()) != null) {
+                        result += line;
+                    }
+                    JSONObject Job = new JSONObject(result);
+                    JSONArray Wdata = Job.getJSONArray("Worker");
+                    for(int i =0; i<Wdata.length(); i++) {
+                        JSONObject HE = Wdata.getJSONObject(i);
+                        String Fname = HE.getString("First Name");
+                        String Lname = HE.getString("Last Name");
+                        String Pnumber = HE.getString("Phone Number");
+                        TicketDetails.mArr7.add(Fname);
+                        TicketDetails.mArr8.add(Lname);
+                        TicketDetails.mArr9.add(Pnumber);
+                    }
+                    bufferedReader.close();
+                    inputStream.close();
+                    outputStream.close();
+
+                    return result;
+                }
+                catch (MalformedURLException e) {
+                    e.printStackTrace(); }
+                catch (IOException e) {
+                    e.printStackTrace(); }
+                catch (JSONException e) {
+                    e.printStackTrace(); }
+            }
+
+            else if (type.equals("JobsiteHeader")){
+                try{
+                    String TID = params[1];
+                    URL url = new URL(HeaderInfo_URL);
+                    URLConnection conn = url.openConnection();
+                    conn.setDoOutput(true);
+                    conn.setDoInput(true);
+                    OutputStream outputStream = conn.getOutputStream();
+                    BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                    String post_data = URLEncoder.encode("TID", "UTF-8") + "=" + URLEncoder.encode(TID, "UTF-8");
+                    bufferedWriter.write(post_data);
+                    bufferedWriter.flush();
+                    bufferedWriter.close();
+                    InputStream inputStream = conn.getInputStream();
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
+                    String result = "";
+                    String line = "";
+                    while ((line = bufferedReader.readLine()) != null) {
+                        result += line;
+                    }
+
+                    JSONObject Job = new JSONObject(result);
+                    String message=Job.getString("Message");
+                    TicketDetails.JobAddress=Job.getString("Jobsite");
+                    TicketDetails.DateAdded=Job.getString("Date");
+                    TicketDetails.Prior=Job.getString("Priority");
+
+                    inputStream.close();
+                    outputStream.close();
+
+                    bufferedReader.close();
+                    return result;
+                }
+                catch (MalformedURLException e) {
+                    e.printStackTrace(); }
+                catch (IOException e) {
+                    e.printStackTrace(); }
+                catch (JSONException e) {
+                    e.printStackTrace(); }
+            }
+
 
         return null;
     }
