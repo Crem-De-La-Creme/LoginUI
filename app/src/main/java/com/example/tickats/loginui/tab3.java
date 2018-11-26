@@ -17,13 +17,12 @@ import java.util.ArrayList;
 
 
 public class tab3 extends Fragment {
-
+    private TextView mTextMessage;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstantState) {
         View view = inflater.inflate(R.layout.fragment_tab3, container, false);
-
-
+        mTextMessage = (TextView) view.findViewById(R.id.message);
 
         return view;
     }
